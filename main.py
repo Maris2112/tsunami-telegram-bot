@@ -19,10 +19,13 @@ def ask_flowise(question, history=[]):
         print("[PAYLOAD TO FLOWISE]:", payload)
 
         response = requests.post(FLOWISE_URL, json=payload, timeout=120)
+        print("[Flowise RAW Response]:", response.text)  # 🧠 Добавлено для отладки
         response.raise_for_status()
+
         return response.json().get("text", "🤖 Flowise не ответил.")
     except Exception as e:
         print("[ERROR] Flowise call failed:", e)
+        traceback.print_exc()  # 👈 Добавлено для полной трассировки ошибки
         return "⚠️ Ошибка при обращении к ИИ. Попробуй позже."
 
 def send_telegram_message(chat_id, text):
